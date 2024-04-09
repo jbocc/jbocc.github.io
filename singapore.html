@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: black;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            text-align: center;
+        }
+
+        .clock {
+            color: #17D4FE;
+            font-size: 150px;
+            font-family: Lucida Console;
+            letter-spacing: 7px;
+        }
+
+        .city-name {
+            font-size: 100px;
+            font-family: Lucida Console;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-top: 15px;
+        }
+
+        .date {
+            font-size: 30px;
+            font-family: Lucida Console;
+            color: #FFFFFF;
+            margin-top: 10px;
+        }
+
+        .sleeping {
+            font-size: 30px;
+            font-family: Lucida Console;
+            color: #FFFFFF;
+            margin-top: 10px;
+            display: none;
+        }
+
+        @keyframes sleepingAnimation {
+            0% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        .sleeping.animated {
+            animation: sleepingAnimation 10s infinite;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+	<div class="date" id="currentDate"></div>
+    <div id="MyClockDisplay" class="clock"></div>
+    <div class="city-name">SINGAPORE</div>
+    <div class="sleeping" id="sleepingText">💤 Sleeping</div>
+</div>
+
+<script>
+    function showTime() {
+        var options = { timeZone: 'Asia/Singapore' };
+        var date = new Date();
+        var zoneDate = new Date(date.toLocaleString('en-US', options));
+        var h = zoneDate.getHours();
+        var m = zoneDate.getMinutes();
+        var s = zoneDate.getSeconds();
+
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+
+        var time = h + ":" + m + ":" + s;
+        var clockDisplay = document.getElementById("MyClockDisplay");
+        var sleepingText = document.getElementById("sleepingText");
+
+        if (h >= 8 && h < 18) {
+            clockDisplay.style.color = "#00A36C";
+            sleepingText.style.display = "none";
+        } else {
+            clockDisplay.style.color = "#89CFF0";
+            sleepingText.style.display = "block";
+            sleepingText.classList.add("animated");
+        }
+
+        clockDisplay.innerText = time;
+        clockDisplay.textContent = time;
+
+        var currentDateDisplay = document.getElementById("currentDate");
+        var formattedDate = zoneDate.toDateString();
+        currentDateDisplay.innerText = formattedDate;
+
+        setTimeout(showTime, 1000);
+    }
+
+    showTime();
+</script>
+
+</body>
+</html>
